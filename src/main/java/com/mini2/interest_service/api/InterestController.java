@@ -6,7 +6,6 @@ import com.mini2.interest_service.common.web.context.GatewayRequestHeaderUtils;
 import com.mini2.interest_service.domain.dto.InterestRequestDto;
 import com.mini2.interest_service.domain.dto.InterestResponseDto;
 import com.mini2.interest_service.service.InterestService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +40,13 @@ public class InterestController {
         Long userId = Long.valueOf(GatewayRequestHeaderUtils.getUserIdOrThrowException());
         interestService.updateInterest(dto, userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<Void> deleteInterests() {
+        Long userId = Long.valueOf(GatewayRequestHeaderUtils.getUserIdOrThrowException());
+        interestService.deleteByUserId(userId);
+        return ResponseEntity.ok().build();
     }
 
 }
