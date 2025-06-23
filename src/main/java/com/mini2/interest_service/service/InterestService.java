@@ -71,4 +71,9 @@ public class InterestService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void deleteByUserId(Long userId) {
+        userInterestRepository.deleteByUserId(userId);
+    }
+
 }
