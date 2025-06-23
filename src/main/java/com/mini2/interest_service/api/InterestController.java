@@ -2,6 +2,7 @@ package com.mini2.interest_service.api;
 
 import java.util.List;
 
+import com.mini2.interest_service.common.web.context.GatewayRequestHeaderUtils;
 import com.mini2.interest_service.domain.dto.InterestRequestDto;
 import com.mini2.interest_service.domain.dto.InterestResponseDto;
 import com.mini2.interest_service.service.InterestService;
@@ -21,24 +22,25 @@ public class InterestController {
     private final InterestService interestService;
 
     @PostMapping("/")
-    public ResponseEntity<Void> addInterest(@RequestBody InterestRequestDto dto, HttpServletRequest request) {
-        interestService.addInterest(dto, request);
+    public ResponseEntity<Void> addInterest(@RequestBody InterestRequestDto dto) {
+        Long userId = Long.valueOf(GatewayRequestHeaderUtils.getUserIdOrThrowException());
+        interestService.addInterest(dto, userId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<InterestResponseDto>> getInterests(HttpServletRequest request) {
-        List<InterestResponseDto> list = interestService.getInterests(request);
+    public ResponseEntity<List<InterestResponseDto>> getInterests() {
+        Long userId = Long.valueOf(GatewayRequestHeaderUtils.getUserIdOrThrowException());
+        List<InterestResponseDto> list = interestService.getInterests(userId);
         return ResponseEntity.ok(list);
     }
 
 
     @PutMapping("/")
-    public ResponseEntity<Void> updateInterests(
-            HttpServletRequest request,
-            @RequestBody InterestRequestDto dto) {
-
-        interestService.updateInterest(dto, request);
+    public ResponseEntity<Void> updateInterests(@RequestBody InterestRequestDto dto) {
+        Long userId = Long.valueOf(GatewayRequestHeaderUtils.getUserIdOrThrowException());
+        interestService.updateInterest(dto, userId);
         return ResponseEntity.noContent().build();
     }
+
 }

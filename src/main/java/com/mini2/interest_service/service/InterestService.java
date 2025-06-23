@@ -10,8 +10,6 @@ import com.mini2.interest_service.domain.dto.InterestRequestDto;
 import com.mini2.interest_service.domain.dto.InterestResponseDto;
 import com.mini2.interest_service.domain.repository.InterestRepository;
 import com.mini2.interest_service.domain.repository.UserInterestRepository;
-import com.mini2.interest_service.jwt.JwtUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +22,7 @@ public class InterestService {
     private final UserInterestRepository userInterestRepository;
 
     @Transactional
-    public void addInterest(InterestRequestDto dto, HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        Long userId = JwtUtil.getUserIdFromToken(token);
+    public void addInterest(InterestRequestDto dto, Long userId) {
 
         for (String name : dto.getName()) {
             Interest interest = interestRepository.findByName(name)
@@ -47,10 +43,7 @@ public class InterestService {
     }
 
     @Transactional
-    public void updateInterest(InterestRequestDto dto, HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        Long userId = JwtUtil.getUserIdFromToken(token);
-
+    public void updateInterest(InterestRequestDto dto, Long userId) {
         userInterestRepository.deleteByUserId(userId);
 
         for (String name : dto.getName()) {
@@ -70,9 +63,7 @@ public class InterestService {
 
 
     @Transactional(readOnly = true)
-    public List<InterestResponseDto> getInterests(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        Long userId = JwtUtil.getUserIdFromToken(token);
+    public List<InterestResponseDto> getInterests(Long userId) {
 
         return userInterestRepository.findByUserId(userId).stream()
                 .map(UserInterest::getInterest)
