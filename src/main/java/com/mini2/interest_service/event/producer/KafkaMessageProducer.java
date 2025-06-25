@@ -18,8 +18,10 @@ public class KafkaMessageProducer {
 
 
     public void sendInterestEvent(InterestRequestDto dto) {
-        InterestPayloadDto payload = new InterestPayloadDto(dto.getName());
-
+        InterestPayloadDto payload = new InterestPayloadDto(
+                String.valueOf(dto.getUserId()),
+                dto.getName()
+        );
         InterestEventDto event = new InterestEventDto(
                 "관심사 정보",
                 LocalDateTime.now(),

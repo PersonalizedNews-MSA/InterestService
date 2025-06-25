@@ -10,5 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InterestPayloadDto {
+    private String userId;
     private List<String> name;
 }
