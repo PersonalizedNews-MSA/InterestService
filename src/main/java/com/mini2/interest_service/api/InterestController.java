@@ -26,7 +26,7 @@ public class InterestController {
     public ResponseEntity<Void> addInterest(@RequestBody InterestRequestDto dto) {
         Long userId = Long.valueOf(GatewayRequestHeaderUtils.getUserIdOrThrowException());
         interestService.addInterest(dto, userId);
-        kafkaMessageProducer.sendInterestEvent(dto);
+        kafkaMessageProducer.sendInterestEvent(dto, userId);
 
         return ResponseEntity.ok().build();
     }
@@ -44,7 +44,7 @@ public class InterestController {
     public ResponseEntity<Void> updateInterests(@RequestBody InterestRequestDto dto) {
         Long userId = Long.valueOf(GatewayRequestHeaderUtils.getUserIdOrThrowException());
         interestService.updateInterest(dto, userId);
-        kafkaMessageProducer.sendInterestEvent(dto);
+        kafkaMessageProducer.sendInterestEvent(dto, userId);
 
         return ResponseEntity.noContent().build();
     }

@@ -17,9 +17,9 @@ public class KafkaMessageProducer {
     private final KafkaTemplate<String, InterestEventDto> kafkaTemplate;
 
 
-    public void sendInterestEvent(InterestRequestDto dto) {
+    public void sendInterestEvent(InterestRequestDto dto, Long userId) {
         InterestPayloadDto payload = new InterestPayloadDto(
-                String.valueOf(dto.getUserId()),
+                String.valueOf(userId),
                 dto.getName()
         );
         InterestEventDto event = new InterestEventDto(
@@ -29,6 +29,6 @@ public class KafkaMessageProducer {
                 payload
         );
 
-        kafkaTemplate.send("UserInterestInfo", event);
+        kafkaTemplate.send("UserInterestInfo", payload.getUserId(), event);
     }
 }
